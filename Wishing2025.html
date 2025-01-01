@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy New Year 2025</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #ffafbd, #ffc3a0);
+            color: #333;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        h1 {
+            font-size: 4rem;
+            margin-top: 20vh;
+            color: #fff;
+            text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.4);
+        }
+
+        p {
+            font-size: 1.5rem;
+            color: #fff;
+            margin: 20px 0;
+            text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .countdown {
+            font-size: 2rem;
+            margin: 20px 0;
+            color: #fffa;
+        }
+
+        .author {
+            font-size: 2rem;
+            margin: 20px 0;
+            color: #fffa;
+        }
+
+        .message {
+            font-size: 1.8rem;
+            margin-top: 20px;
+            color: #fffa;
+            visibility: hidden;
+        }
+
+        .fireworks {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <h1>Happy New Year 2025 🎉</h1>
+        <p class="countdown">Starting the new year in... <span id="countdown">3</span></p>
+        <p class="message" id="message">Wishing you a year filled with joy, health, and success! 🥂</p>
+        <p class="author" id="author"> - By. Santosh Singhaniya </p>
+        <canvas class="fireworks" id="fireworks"></canvas>
+    </div>
+
+    <script>
+        // Countdown logic
+        const countdownElement = document.getElementById('countdown');
+        const messageElement = document.getElementById('message');
+        let count = 5;
+
+        const countdownInterval = setInterval(() => {
+            count--;
+            countdownElement.textContent = count;
+
+            if (count === 0) {
+                clearInterval(countdownInterval);
+                countdownElement.style.display = 'none';
+                messageElement.style.visibility = 'visible';
+                launchFireworks();
+            }
+        }, 1000);
+
+        // Fireworks animation
+        function launchFireworks() {
+            const canvas = document.getElementById('fireworks');
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+
+            const particles = [];
+            const colors = ['#ff4e50', '#fc913a', '#f9d423', '#eae374', '#e2f4c7'];
+
+            function createParticle() {
+                const x = Math.random() * canvas.width;
+                const y = Math.random() * canvas.height;
+                const size = Math.random() * 5 + 1;
+                const color = colors[Math.floor(Math.random() * colors.length)];
+                const speedX = Math.random() * 4 - 2;
+                const speedY = Math.random() * 4 - 2;
+
+                particles.push({ x, y, size, color, speedX, speedY });
+            }
+
+            function updateParticles() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                particles.forEach((p, i) => {
+                    p.x += p.speedX;
+                    p.y += p.speedY;
+                    p.size *= 0.95;
+
+                    if (p.size <= 0.1) {
+                        particles.splice(i, 1);
+                    }
+                });
+            }
+
+            function drawParticles() {
+                particles.forEach(p => {
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                    ctx.fillStyle = p.color;
+                    ctx.fill();
+                });
+            }
+
+            function animate() {
+                updateParticles();
+                drawParticles();
+                requestAnimationFrame(animate);
+            }
+
+            setInterval(createParticle, 100);
+            animate();
+        }
+    </script>
+</body>
+</html>
